@@ -14,6 +14,6 @@ namespace SetuAPITool.LoliconAPI.V1
         public int Count { get; set; }
 
         [JsonProperty("data")]
-        public Setu[] Data { get; set; }
+        public PixivInfo[] Data { get; set; }
     }
 }

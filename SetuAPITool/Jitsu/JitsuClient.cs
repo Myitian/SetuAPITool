@@ -10,18 +10,28 @@ namespace SetuAPITool.Jitsu
         public const string Document = "https://img.jitsu.top/";
 
         static string[] _anosu = {
-            "https://moe.anosu.top/img",
-            "https://moe.anosu.top/api",
-            "https://api.anosu.top/img",
-            "https://api.anosu.top/api"
+            "https://moe.anosu.top/img/",
+            "https://moe.anosu.top/api/",
+            "https://api.anosu.top/img/",
+            "https://api.anosu.top/api/"
         };
         static string[] _jitsu = {
-            "https://moe.jitsu.top/img",
-            "https://moe.jitsu.top/api",
-            "https://api.jitsu.top/img",
-            "https://api.jitsu.top/api"
+            "https://moe.jitsu.top/img/",
+            "https://moe.jitsu.top/api/",
+            "https://api.jitsu.top/img/",
+            "https://api.jitsu.top/api/"
         };
         static string[] _all = _anosu.Concat(_jitsu).ToArray();
+
+        static string[] _specialR18anosu = {
+            "https://moe.anosu.top/r18/",
+            "https://api.anosu.top/r18/"
+        };
+        static string[] _specialR18jitsu = {
+            "https://moe.jitsu.top/r18/",
+            "https://api.jitsu.top/r18/"
+        };
+        static string[] _specialR18all = _specialR18anosu.Concat(_specialR18jitsu).ToArray();
 
         public override Task<string> GetJsonAsync(params KeyValuePair<string, string>[] patameters)
         {

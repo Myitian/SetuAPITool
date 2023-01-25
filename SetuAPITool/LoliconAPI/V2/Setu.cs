@@ -1,50 +1,29 @@
 ﻿using Newtonsoft.Json;
-using SetuAPITool.Util;
-using System;
 using System.Collections.Generic;
 
 namespace SetuAPITool.LoliconAPI.V2
 {
-    public class Setu
+    public class Setu : PixivInfo
     {
-        [JsonProperty("pid")]
-        public int Pid { get; set; }
-
-        [JsonProperty("p")]
-        public int P { get; set; }
-
-        [JsonProperty("uid")]
-        public int Uid { get; set; }
-
-        [JsonProperty("title")]
-        public string Title { get; set; }
-
-        [JsonProperty("author")]
-        public string Author { get; set; }
-
-        [JsonProperty("r18")]
-        public bool R18 { get; set; }
-
-        [JsonProperty("width")]
-        public int Width { get; set; }
-
-        [JsonProperty("height")]
-        public int Height { get; set; }
-
-        [JsonProperty("tags")]
-        public string[] Tags { get; set; }
-
         [JsonProperty("ext")]
         public string Ext { get; set; }
 
-        [JsonProperty("aiType")]
-        public AiTypes AiType { get; set; }
-
-        [JsonProperty("uploadDate", DefaultValueHandling = DefaultValueHandling.Ignore)]
-        [JsonConverter(typeof(UnixTimeMillisecondConverter))]
-        public DateTime UploadDate { get; set; }
-
         [JsonProperty("urls")]
         public Dictionary<string, string> Urls { get; set; }
+
+        public Setu() { }
+        public Setu(PixivInfo pixivInfo)
+        {
+            Pid = pixivInfo.Pid;
+            P = pixivInfo.P;
+            Uid = pixivInfo.Uid;
+            Title = pixivInfo.Title;
+            Author = pixivInfo.Author;
+            R18 = pixivInfo.R18;
+            Width = pixivInfo.Width;
+            Height = pixivInfo.Height;
+            Tags = pixivInfo.Tags;
+            Urls = new Dictionary<string, string> { { "Fallback", pixivInfo.Url } };
+        }
     }
 }

@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 
 namespace SetuAPITool.LoliconAPI
 {
-    public class LoliconAPIClient : SetuAPIClient
+    public class LoliconAPIClient : SetuAPIClient, IPixivPictureClient
     {
+        public const string Document = "https://api.lolicon.app";
+
         public const string V1 = "https://api.lolicon.app/setu/v1";
         public const string V2 = "https://api.lolicon.app/setu/v2";
 
@@ -268,6 +270,92 @@ namespace SetuAPITool.LoliconAPI
         {
             V2.Respond respond = await GetRespondV2Async(postRequest, request);
             return respond.Data.Select(x => x.Urls.Values.ElementAt(0)).ToList();
+        }
+
+        public async Task<PixivInfo> GetPixivInfoAsync(params KeyValuePair<string, string>[] patameters)
+        {
+            return (await GetMultiplePixivInfoAsync(patameters))[0];
+        }
+        public async Task<PixivInfo> GetPixivInfoAsync()
+        {
+            return (await GetMultiplePixivInfoAsync())[0];
+        }
+        public async Task<PixivInfo> GetPixivInfoAsync(R18Type r18)
+        {
+            return (await GetMultiplePixivInfoAsync(1, r18))[0];
+        }
+        public async Task<PixivInfo> GetPixivInfoAsync(R18Type r18, string keyword)
+        {
+            return (await GetMultiplePixivInfoAsync(1, r18, keyword))[0];
+        }
+        public async Task<PixivInfo> GetPixivInfoAsync(bool v2, params KeyValuePair<string, string>[] patameters)
+        {
+            return (await GetMultiplePixivInfoAsync(v2, patameters))[0];
+        }
+        public async Task<PixivInfo> GetPixivInfoV1Async(params KeyValuePair<string, string>[] patameters)
+        {
+            return (await GetMultiplePixivInfoV1Async(patameters))[0];
+        }
+        public async Task<PixivInfo> GetPixivInfoV1Async(V1.Request request)
+        {
+            return (await GetMultiplePixivInfoV1Async(request))[0];
+        }
+        public async Task<PixivInfo> GetPixivInfoV2Async(bool postRequest = false, params KeyValuePair<string, string>[] patameters)
+        {
+            return (await GetMultiplePixivInfoV2Async(postRequest, patameters))[0];
+        }
+        public async Task<PixivInfo> GetPixivInfoV2Async(bool postRequest = false, V2.Request request = null)
+        {
+            return (await GetMultiplePixivInfoV2Async(postRequest, request))[0];
+        }
+
+        public async Task<List<PixivInfo>> GetMultiplePixivInfoAsync(params KeyValuePair<string, string>[] patameters)
+        {
+            return await GetMultiplePixivInfoV2Async(patameters: patameters);
+        }
+        public async Task<List<PixivInfo>> GetMultiplePixivInfoAsync(int num = 1)
+        {
+            return await GetMultiplePixivInfoV1Async(new KeyValuePair<string, string>("num", num.ToString()));
+        }
+        public async Task<List<PixivInfo>> GetMultiplePixivInfoAsync(int num, R18Type r18)
+        {
+            return await GetMultiplePixivInfoV1Async(
+                new KeyValuePair<string, string>("num", num.ToString()),
+                new KeyValuePair<string, string>("r18", ((int)r18).ToString()));
+        }
+        public async Task<List<PixivInfo>> GetMultiplePixivInfoAsync(int num, R18Type r18, string keyword)
+        {
+            return await GetMultiplePixivInfoV1Async(
+                new KeyValuePair<string, string>("num", num.ToString()),
+                new KeyValuePair<string, string>("r18", ((int)r18).ToString()),
+                new KeyValuePair<string, string>("keyword", keyword.ToString()));
+        }
+        public async Task<List<PixivInfo>> GetMultiplePixivInfoAsync(bool v2, params KeyValuePair<string, string>[] patameters)
+        {
+            if (v2)
+            {
+                return await GetMultiplePixivInfoV2Async(patameters: patameters);
+            }
+            else
+            {
+                return await GetMultiplePixivInfoV1Async(patameters);
+            }
+        }
+        public async Task<List<PixivInfo>> GetMultiplePixivInfoV1Async(params KeyValuePair<string, string>[] patameters)
+        {
+            return (await GetRespondV1Async(patameters)).Data.ToList();
+        }
+        public async Task<List<PixivInfo>> GetMultiplePixivInfoV1Async(V1.Request request)
+        {
+            return (await GetRespondV1Async(request)).Data.ToList();
+        }
+        public async Task<List<PixivInfo>> GetMultiplePixivInfoV2Async(bool postRequest = false, params KeyValuePair<string, string>[] patameters)
+        {
+            return (await GetRespondV2Async(postRequest, patameters)).Data.Select(x => new PixivInfo(x)).ToList();
+        }
+        public async Task<List<PixivInfo>> GetMultiplePixivInfoV2Async(bool postRequest = false, V2.Request request = null)
+        {
+            return (await GetRespondV2Async(postRequest, request)).Data.Select(x => new PixivInfo(x)).ToList();
         }
     }
 }

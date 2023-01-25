@@ -10,6 +10,8 @@ namespace SetuAPITool.MirlKoi
 {
     internal class MirlKoiClient : SetuAPIClient
     {
+        public const string Document = "https://iw233.cn/main.html";
+
         protected RandomUtil _randomUtil;
         public virtual RandomUtil RandomUtil
         {

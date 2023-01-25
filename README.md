@@ -4,7 +4,7 @@
 
 暂定 .NET Standard 1.1
 
-需要 Json.NET (Newtonsoft.Json)
+需要 [Json.NET](https://www.newtonsoft.com/json) (Newtonsoft.Json)
 
 WIP
 
