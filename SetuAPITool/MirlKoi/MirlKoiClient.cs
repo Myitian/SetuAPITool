@@ -12,13 +12,6 @@ namespace SetuAPITool.MirlKoi
     {
         public const string Document = "https://iw233.cn/main.html";
 
-        protected RandomUtil _randomUtil;
-        public virtual RandomUtil RandomUtil
-        {
-            get => _randomUtil;
-            set => _randomUtil = value ?? throw new ArgumentNullException(nameof(value));
-        }
-
         public override bool SupportR18 => false;
 
         public string[] URLs = {
@@ -28,6 +21,13 @@ namespace SetuAPITool.MirlKoi
             "https://dev.iw233.cn/api.php",
             "https://mirlkoi.ifast3.vipnps.vip/api.php"
         };
+
+        protected RandomUtil _randomUtil;
+        public virtual RandomUtil RandomUtil
+        {
+            get => _randomUtil;
+            set => _randomUtil = value ?? throw new ArgumentNullException(nameof(value));
+        }
 
         public MirlKoiClient() : this(null, null) { }
         public MirlKoiClient(HttpClient httpClient) : this(httpClient, null) { }

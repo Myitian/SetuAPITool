@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using SetuAPITool.Util;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -32,6 +34,20 @@ namespace SetuAPITool.Jitsu
             "https://api.jitsu.top/r18/"
         };
         static string[] _specialR18all = _specialR18anosu.Concat(_specialR18jitsu).ToArray();
+
+        protected RandomUtil _randomUtil;
+        public virtual RandomUtil RandomUtil
+        {
+            get => _randomUtil;
+            set => _randomUtil = value ?? throw new ArgumentNullException(nameof(value));
+        }
+
+        public JitsuClient() : this(null, null) { }
+        public JitsuClient(HttpClient httpClient) : this(httpClient, null) { }
+        public JitsuClient(HttpClient httpClient, RandomUtil random) : base(httpClient)
+        {
+            _randomUtil = random ?? new RandomUtil();
+        }
 
         public override Task<string> GetJsonAsync(params KeyValuePair<string, string>[] patameters)
         {
