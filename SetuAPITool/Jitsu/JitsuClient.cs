@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace SetuAPITool.Jitsu
 {
-    internal class JitsuClient
+    public class JitsuClient
     {
+        public const string Document = "https://img.jitsu.top/";
+
         string[] _anosu = { 
             "https://moe.anosu.top/img", 
             "https://moe.anosu.top/api", 

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SetuAPITool.LoliconAPI.V2
 {
-    public class LoliconRespond
+    public class Respond
     {
         [JsonProperty("error")]
         public string Error { get; set; }

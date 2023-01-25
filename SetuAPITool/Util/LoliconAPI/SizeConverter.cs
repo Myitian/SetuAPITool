@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using SetuAPITool.LoliconAPI.V2;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,12 +6,13 @@ using System.Text;
 namespace SetuAPITool.Util.LoliconAPI
 {
 
-    public class SizeConverter : JsonConverter<Size>
+    public class SizeConverter : JsonConverter<PixivSize>
     {
         private readonly static string[] _sizeStr = { "original", "regular", "small", "thumb", "mini" };
-        public override void WriteJson(JsonWriter writer, Size value, JsonSerializer serializer)
+
+        public override void WriteJson(JsonWriter writer, PixivSize value, JsonSerializer serializer)
         {
-            if (value == Size.Default)
+            if (value == PixivSize.Default)
             {
                 writer.WriteNull();
             }
@@ -32,11 +32,11 @@ namespace SetuAPITool.Util.LoliconAPI
             }
         }
 
-        public override Size ReadJson(JsonReader reader, Type objectType, Size existingValue, bool hasExistingValue, JsonSerializer serializer)
+        public override PixivSize ReadJson(JsonReader reader, Type objectType, PixivSize existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
             if (reader.TokenType == JsonToken.Integer)
             {
-                return (Size)(int)reader.Value;
+                return (PixivSize)(int)reader.Value;
             }
             throw new Exception("Wrong Token Type");
         }
