@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Text;
 
 namespace SetuAPITool.Util
 {
@@ -14,7 +11,12 @@ namespace SetuAPITool.Util
             set => _rng = value ?? throw new ArgumentNullException(nameof(value));
         }
 
-        public T GetRandom<T>(T[] values) => values[RNG.Next(values.Length)];
+        public RandomUtil() : this(null) { }
+        public RandomUtil(Random rng)
+        {
+            _rng = rng ?? throw new ArgumentNullException(nameof(rng));
+        }
 
+        public T GetRandom<T>(params T[] values) => values[RNG.Next(values.Length)];
     }
 }

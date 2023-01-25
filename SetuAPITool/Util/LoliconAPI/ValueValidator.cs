@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 
 namespace SetuAPITool.Util.LoliconAPI
 {
     public static class ValueValidator
     {
+        private readonly static string[] _sizeStr = { "original", "regular", "small", "thumb", "mini" };
+
         public static bool Validate2DTags(string[] tags)
         {
             if (tags != null)
@@ -42,6 +41,10 @@ namespace SetuAPITool.Util.LoliconAPI
                 }
             }
             return true;
+        }
+        public static bool ValidateSizeString(string size)
+        {
+            return _sizeStr.Contains(size);
         }
     }
 }

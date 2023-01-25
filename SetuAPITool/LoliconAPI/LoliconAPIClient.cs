@@ -1,11 +1,8 @@
 ﻿using Newtonsoft.Json;
 using SetuAPITool.Util;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SetuAPITool.LoliconAPI
@@ -23,11 +20,22 @@ namespace SetuAPITool.LoliconAPI
         {
             return await GetJsonAsync(true, patameters);
         }
-        public override async Task<string> GetJsonAsync(int num = 1, R18Type r18 = R18Type.NonR18)
+        public override async Task<string> GetJsonAsync(int num = 1)
+        {
+            return await GetJsonAsync(new KeyValuePair<string, string>("num", num.ToString()));
+        }
+        public override async Task<string> GetJsonAsync(int num, R18Type r18)
         {
             return await GetJsonAsync(
                 new KeyValuePair<string, string>("num", num.ToString()),
                 new KeyValuePair<string, string>("r18", ((int)r18).ToString()));
+        }
+        public async Task<string> GetJsonAsync(int num, R18Type r18, string keyword)
+        {
+            return await GetJsonAsync(
+                new KeyValuePair<string, string>("num", num.ToString()),
+                new KeyValuePair<string, string>("r18", ((int)r18).ToString()),
+                new KeyValuePair<string, string>("keyword", keyword.ToString()));
         }
         public async Task<string> GetJsonAsync(bool v2 = true, params KeyValuePair<string, string>[] patameters)
         {
@@ -44,15 +52,15 @@ namespace SetuAPITool.LoliconAPI
                 return await (await GetAsync(V1, ParametersConverter.URLEncode(patameters))).Content.ReadAsStringAsync();
             }
         }
-        public async Task<string> GetJsonV1Async(V1.Request patameters = null)
+        public async Task<string> GetJsonV1Async(V1.Request request = null)
         {
-            if (patameters == null)
+            if (request == null)
             {
                 return await (await GetAsync(V1)).Content.ReadAsStringAsync();
             }
             else
             {
-                return await (await GetAsync(V1, ParametersConverter.URLEncode(patameters.ToKeyValuePairs()))).Content.ReadAsStringAsync();
+                return await (await GetAsync(V1, ParametersConverter.URLEncode(request.ToKeyValuePairs()))).Content.ReadAsStringAsync();
             }
         }
         public async Task<string> GetJsonV2Async(bool postRequest = false, params KeyValuePair<string, string>[] patameters)
@@ -81,28 +89,28 @@ namespace SetuAPITool.LoliconAPI
                 }
             }
         }
-        public async Task<string> GetJsonV2Async(bool postRequest = false, V2.Request patameters = null)
+        public async Task<string> GetJsonV2Async(bool postRequest = false, V2.Request request = null)
         {
             if (postRequest)
             {
-                if (patameters == null)
+                if (request == null)
                 {
                     return await (await PostAsync(V2)).Content.ReadAsStringAsync();
                 }
                 else
                 {
-                    return await (await PostAsync(V2, JsonConvert.SerializeObject(patameters), "application/json")).Content.ReadAsStringAsync();
+                    return await (await PostAsync(V2, JsonConvert.SerializeObject(request), "application/json")).Content.ReadAsStringAsync();
                 }
             }
             else
             {
-                if (patameters == null)
+                if (request == null)
                 {
                     return await (await GetAsync(V2)).Content.ReadAsStringAsync();
                 }
                 else
                 {
-                    return await (await GetAsync(V2, ParametersConverter.URLEncode(patameters.ToKeyValuePairs()))).Content.ReadAsStringAsync();
+                    return await (await GetAsync(V2, ParametersConverter.URLEncode(request.ToKeyValuePairs()))).Content.ReadAsStringAsync();
                 }
             }
         }
@@ -115,60 +123,120 @@ namespace SetuAPITool.LoliconAPI
         {
             return JsonConvert.DeserializeObject<V2.Respond>(await GetJsonV2Async(postRequest, patameters));
         }
-        public async Task<V1.Respond> GetRespondV1Async(V1.Request patameters)
+        public async Task<V1.Respond> GetRespondV1Async(V1.Request request)
         {
-            return JsonConvert.DeserializeObject<V1.Respond>(await GetJsonV1Async(patameters));
+            return JsonConvert.DeserializeObject<V1.Respond>(await GetJsonV1Async(request));
         }
-        public async Task<V2.Respond> GetRespondV2Async(bool postRequest = false, V2.Request patameters = null)
+        public async Task<V2.Respond> GetRespondV2Async(bool postRequest = false, V2.Request request = null)
         {
-            return JsonConvert.DeserializeObject<V2.Respond>(await GetJsonV2Async(postRequest, patameters));
+            return JsonConvert.DeserializeObject<V2.Respond>(await GetJsonV2Async(postRequest, request));
+        }
+
+        public override async Task<HttpContent> GetPictureAsync(params KeyValuePair<string, string>[] patameters)
+        {
+            return await GetPictureV2Async(patameters: patameters);
+        }
+        public override async Task<HttpContent> GetPictureAsync()
+        {
+            return await GetPictureAsync(null);
+        }
+        public override async Task<HttpContent> GetPictureAsync(R18Type r18)
+        {
+            return await GetPictureAsync(new KeyValuePair<string, string>("r18", ((int)r18).ToString()));
+        }
+        public async Task<HttpContent> GetPictureAsync(int num, R18Type r18, string keyword)
+        {
+            return await GetPictureAsync(
+                new KeyValuePair<string, string>("num", num.ToString()),
+                new KeyValuePair<string, string>("r18", ((int)r18).ToString()),
+                new KeyValuePair<string, string>("keyword", keyword.ToString()));
+        }
+        public async Task<HttpContent> GetPictureAsync(bool v2, params KeyValuePair<string, string>[] patameters)
+        {
+            if (v2)
+            {
+                return await GetPictureV2Async(patameters: patameters);
+            }
+            else
+            {
+                return await GetPictureV1Async(patameters);
+            }
+        }
+        public async Task<HttpContent> GetPictureV1Async(params KeyValuePair<string, string>[] patameters)
+        {
+            return (await GetAsync(await GetPictureUrlV1Async(patameters))).Content;
+        }
+        public async Task<HttpContent> GetPictureV1Async(V1.Request request)
+        {
+            return (await GetAsync(await GetPictureUrlV1Async(request))).Content;
+        }
+        public async Task<HttpContent> GetPictureV2Async(bool postRequest = false, params KeyValuePair<string, string>[] patameters)
+        {
+            return (await GetAsync(await GetPictureUrlV2Async(postRequest, patameters))).Content;
+        }
+        public async Task<HttpContent> GetPictureV2Async(bool postRequest = false, V2.Request request = null)
+        {
+            return (await GetAsync(await GetPictureUrlV2Async(postRequest, request))).Content;
         }
 
         public override async Task<string> GetPictureUrlAsync(params KeyValuePair<string, string>[] patameters)
         {
-            return await GetPictureUrlV2Async(patameters: patameters);
+            return (await GetPictureUrlsAsync(patameters))[0];
         }
-        public override async Task<string> GetPictureUrlAsync(R18Type r18 = R18Type.NonR18)
+        public override async Task<string> GetPictureUrlAsync()
         {
-            return await GetPictureUrlAsync(new KeyValuePair<string, string>("r18", ((int)r18).ToString()));
+            return (await GetPictureUrlsAsync())[0];
+        }
+        public override async Task<string> GetPictureUrlAsync(R18Type r18)
+        {
+            return (await GetPictureUrlsAsync(1, r18))[0];
+        }
+        public async Task<string> GetPictureUrlAsync(R18Type r18, string keyword)
+        {
+            return (await GetPictureUrlsAsync(1, r18, keyword))[0];
         }
         public async Task<string> GetPictureUrlAsync(bool v2, params KeyValuePair<string, string>[] patameters)
         {
-            if (v2)
-            {
-                return await GetPictureUrlV2Async(patameters: patameters);
-            }
-            else
-            {
-                return await GetPictureUrlV1Async(patameters);
-            }
+            return (await GetPictureUrlsAsync(v2, patameters))[0];
         }
         public async Task<string> GetPictureUrlV1Async(params KeyValuePair<string, string>[] patameters)
         {
             return (await GetPictureUrlsV1Async(patameters))[0];
         }
-        public async Task<string> GetPictureUrlV1Async(V1.Request patameters)
+        public async Task<string> GetPictureUrlV1Async(V1.Request request)
         {
-            return (await GetPictureUrlsV1Async(patameters))[0];
+            return (await GetPictureUrlsV1Async(request))[0];
         }
         public async Task<string> GetPictureUrlV2Async(bool postRequest = false, params KeyValuePair<string, string>[] patameters)
         {
             return (await GetPictureUrlsV2Async(postRequest, patameters))[0];
         }
-        public async Task<string> GetPictureUrlV2Async(bool postRequest = false, V2.Request patameters = null)
+        public async Task<string> GetPictureUrlV2Async(bool postRequest = false, V2.Request request = null)
         {
-            return (await GetPictureUrlsV2Async(postRequest, patameters))[0];
+            return (await GetPictureUrlsV2Async(postRequest, request))[0];
         }
 
         public override async Task<List<string>> GetPictureUrlsAsync(params KeyValuePair<string, string>[] patameters)
         {
             return await GetPictureUrlsV2Async(patameters: patameters);
         }
-        public override async Task<List<string>> GetPictureUrlsAsync(int num = 1, R18Type r18 = R18Type.NonR18)
+        public override async Task<List<string>> GetPictureUrlsAsync(int num = 1)
+        {
+            return await GetPictureUrlsAsync(
+                new KeyValuePair<string, string>("num", num.ToString()));
+        }
+        public override async Task<List<string>> GetPictureUrlsAsync(int num, R18Type r18)
         {
             return await GetPictureUrlsAsync(
                 new KeyValuePair<string, string>("num", num.ToString()),
                 new KeyValuePair<string, string>("r18", ((int)r18).ToString()));
+        }
+        public async Task<List<string>> GetPictureUrlsAsync(int num, R18Type r18, string keyword)
+        {
+            return await GetPictureUrlsAsync(
+                new KeyValuePair<string, string>("num", num.ToString()),
+                new KeyValuePair<string, string>("r18", ((int)r18).ToString()),
+                new KeyValuePair<string, string>("keyword", keyword.ToString()));
         }
         public async Task<List<string>> GetPictureUrlsAsync(bool v2, params KeyValuePair<string, string>[] patameters)
         {
@@ -186,9 +254,9 @@ namespace SetuAPITool.LoliconAPI
             V1.Respond respond = await GetRespondV1Async(patameters);
             return respond.Data.Select(x => x.Url).ToList();
         }
-        public async Task<List<string>> GetPictureUrlsV1Async(V1.Request patameters)
+        public async Task<List<string>> GetPictureUrlsV1Async(V1.Request request)
         {
-            V1.Respond respond = await GetRespondV1Async(patameters);
+            V1.Respond respond = await GetRespondV1Async(request);
             return respond.Data.Select(x => x.Url).ToList();
         }
         public async Task<List<string>> GetPictureUrlsV2Async(bool postRequest = false, params KeyValuePair<string, string>[] patameters)
@@ -196,9 +264,9 @@ namespace SetuAPITool.LoliconAPI
             V2.Respond respond = await GetRespondV2Async(postRequest, patameters);
             return respond.Data.Select(x => x.Urls.Values.ElementAt(0)).ToList();
         }
-        public async Task<List<string>> GetPictureUrlsV2Async(bool postRequest = false, V2.Request patameters = null)
+        public async Task<List<string>> GetPictureUrlsV2Async(bool postRequest = false, V2.Request request = null)
         {
-            V2.Respond respond = await GetRespondV2Async(postRequest, patameters);
+            V2.Respond respond = await GetRespondV2Async(postRequest, request);
             return respond.Data.Select(x => x.Urls.Values.ElementAt(0)).ToList();
         }
     }

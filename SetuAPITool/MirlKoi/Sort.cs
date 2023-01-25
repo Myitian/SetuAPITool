@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SetuAPITool.MirlKoi
+﻿namespace SetuAPITool.MirlKoi
 {
     public enum Sort
     {

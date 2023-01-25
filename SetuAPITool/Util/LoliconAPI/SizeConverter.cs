@@ -1,7 +1,5 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SetuAPITool.Util.LoliconAPI
 {
@@ -19,14 +17,10 @@ namespace SetuAPITool.Util.LoliconAPI
             else
             {
                 writer.WriteStartArray();
-                int j = 0;
-                for (int i = (int)value & 0b11111; i != 0; i >>= 1)
+                string[] sizes = value.ToStrings();
+                foreach (string size in sizes)
                 {
-                    if ((i & 1) == 1)
-                    {
-                        writer.WriteValue(_sizeStr[j]);
-                    }
-                    j++;
+                    writer.WriteValue(size);
                 }
                 writer.WriteEndArray();
             }
@@ -36,7 +30,7 @@ namespace SetuAPITool.Util.LoliconAPI
         {
             if (reader.TokenType == JsonToken.Integer)
             {
-                return (PixivSize)(int)reader.Value;
+                return EnumConverter.ToEnum<PixivSize>(reader.Value.ToString());
             }
             throw new Exception("Wrong Token Type");
         }

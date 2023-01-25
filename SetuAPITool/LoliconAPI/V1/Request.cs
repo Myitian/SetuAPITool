@@ -1,11 +1,7 @@
 ﻿using Newtonsoft.Json;
-using SetuAPITool.Util.LoliconAPI;
 using SetuAPITool.Util;
-using System;
+using SetuAPITool.Util.LoliconAPI;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SetuAPITool.LoliconAPI.V1
 {

@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Net.Http;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
+using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Threading.Tasks;
 
 namespace SetuAPITool
 {
-    public abstract  class SimpleHttpClient
+    public abstract class SimpleHttpClient
     {
         protected HttpClient _httpClient;
         public virtual HttpClient HttpClient

@@ -1,10 +1,8 @@
 ﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using SetuAPITool.Util;
 using SetuAPITool.Util.LoliconAPI;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace SetuAPITool.LoliconAPI.V2
 {
@@ -63,7 +61,7 @@ namespace SetuAPITool.LoliconAPI.V2
             long lResult;
             foreach (KeyValuePair<string, string> patameter in patameters)
             {
-                switch (patameter.Key )
+                switch (patameter.Key)
                 {
                     case "r18" when r18:
                         if (int.TryParse(patameter.Value, out iResult))
@@ -90,7 +88,7 @@ namespace SetuAPITool.LoliconAPI.V2
                         keyword = false;
                         break;
                     case "tag":
-                        if(patameter.Value != null)
+                        if (patameter.Value != null)
                         {
                             tag.Add(patameter.Value);
                         }
@@ -146,12 +144,12 @@ namespace SetuAPITool.LoliconAPI.V2
             //
             if (Num > 1)
             {
-                result.Add(new KeyValuePair<string, string>("num",Num.ToString()));
+                result.Add(new KeyValuePair<string, string>("num", Num.ToString()));
             }
             //
-            if (Uid != null && Uid.Length> 0)
+            if (Uid != null && Uid.Length > 0)
             {
-                foreach(int uid in Uid)
+                foreach (int uid in Uid)
                 {
                     result.Add(new KeyValuePair<string, string>("uid", uid.ToString()));
                 }

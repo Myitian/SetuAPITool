@@ -1,16 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Newtonsoft.Json;
 
 namespace SetuAPITool.LoliconAPI.V1
 {
     public class Respond
     {
-        public int Code { get; set; }
+        [JsonProperty("code")]
+        public Code Code { get; set; }
+
+        [JsonProperty("message")]
         public string Message { get; set; }
+
+        [JsonProperty("count")]
         public int Count { get; set; }
+
+        [JsonProperty("data")]
         public Setu[] Data { get; set; }
     }
 }
