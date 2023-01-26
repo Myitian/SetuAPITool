@@ -1,9 +1,11 @@
 ﻿using Newtonsoft.Json;
+using SetuAPITool.Jitsu;
 using SetuAPITool.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
 
 namespace SetuAPITool.MirlKoi
@@ -36,70 +38,84 @@ namespace SetuAPITool.MirlKoi
             _randomUtil = random ?? new RandomUtil();
         }
 
-        public override async Task<string> GetJsonAsync(params KeyValuePair<string, string>[] patameters)
+        public override async Task<string> GetJsonAsync(params KeyValuePair<string, string>[] parameters)
         {
-            Dictionary<string, string> paramDic = new Dictionary<string, string>();
-            foreach (KeyValuePair<string, string> parameter in patameters)
-            {
-                paramDic[parameter.Key] = parameter.Value;
-            }
-            paramDic["type"] = "json";
-            return await (await GetAsync(_randomUtil.GetRandom(URLs), ParametersConverter.URLEncode(paramDic.ToArray()))).Content.ReadAsStringAsync();
+            return await GetJsonAsync(new Request(parameters));
         }
         public override async Task<string> GetJsonAsync(int num = 1)
         {
-            return await GetJsonAsync(new KeyValuePair<string, string>("num", num.ToString()));
+            return await GetJsonAsync(new Request(num));
         }
         public override Task<string> GetJsonAsync(int num, R18Type r18)
         {
             throw new NotSupportedException();
         }
-        public async Task<string> GetJsonAsync(Sort sort = Sort.Random, int num = 1)
+        public async Task<string> GetJsonAsync(int num, Sort sort)
         {
-            return await GetJsonAsync(
-                new KeyValuePair<string, string>("num", num.ToString()),
-                new KeyValuePair<string, string>("sort", EnumConverter.ToString(sort)));
+            return await GetJsonAsync(new Request(num, sort));
         }
         public async Task<string> GetJsonAsync(Request request)
         {
-            return await GetJsonAsync(request.ToKeyValuePairs());
+            Dictionary<string, string> paramDic = request.ToDictionary();
+            paramDic["type"] = "json";
+            using (HttpResponseMessage resp = await GetAsync(_randomUtil.GetRandom(URLs), ParametersConverter.UrlEncode(paramDic.ToArray())))
+            {
+                return await resp.Content.ReadAsStringAsync();
+            }
         }
 
-        public override async Task<HttpContent> GetPictureAsync(params KeyValuePair<string, string>[] patameters)
+        public async Task<Response> GetResponseAsync(params KeyValuePair<string, string>[] parameters)
         {
-            foreach (KeyValuePair<string, string> parameter in patameters)
+            return JsonConvert.DeserializeObject<Response>(await GetJsonAsync(parameters));
+        }
+        public async Task<Response> GetResponseAsync(int num = 1)
+        {
+            return JsonConvert.DeserializeObject<Response>(await GetJsonAsync(num));
+        }
+        public async Task<Response> GetResponseAsync(int num, Sort sort)
+        {
+            return JsonConvert.DeserializeObject<Response>(await GetJsonAsync(num, sort));
+        }
+        public async Task<Response> GetResponseAsync(Request request)
+        {
+            return JsonConvert.DeserializeObject<Response>(await GetJsonAsync(request));
+        }
+
+        public override async Task<HttpResponseMessage> GetPictureAsync(params KeyValuePair<string, string>[] parameters)
+        {
+            foreach (KeyValuePair<string, string> parameter in parameters)
             {
                 if (parameter.Key == "sort")
                 {
-                    return (await GetAsync(_randomUtil.GetRandom(URLs), ParametersConverter.URLEncode(parameter))).Content;
+                    return await GetAsync(_randomUtil.GetRandom(URLs), ParametersConverter.UrlEncode(parameter));
                 }
             }
             return await GetPictureAsync();
         }
-        public override async Task<HttpContent> GetPictureAsync()
+        public override async Task<HttpResponseMessage> GetPictureAsync()
         {
             return await GetPictureAsync(Sort.Random);
         }
-        public override Task<HttpContent> GetPictureAsync(R18Type r18)
+        public override Task<HttpResponseMessage> GetPictureAsync(R18Type r18)
         {
             throw new NotSupportedException();
         }
-        public async Task<HttpContent> GetPictureAsync(Sort sort)
+        public async Task<HttpResponseMessage> GetPictureAsync(Sort sort)
         {
-            return (await GetAsync(_randomUtil.GetRandom(URLs), "sort=" + EnumConverter.ToString(sort))).Content;
+            return await GetAsync(_randomUtil.GetRandom(URLs), "sort=" + EnumConverter.ToString(sort));
         }
-        public async Task<HttpContent> GetPictureAsync(Request request)
+        public async Task<HttpResponseMessage> GetPictureAsync(Request request)
         {
             return await GetPictureAsync(request.Sort);
         }
 
-        public override async Task<string> GetPictureUrlAsync(params KeyValuePair<string, string>[] patameters)
+        public override async Task<string> GetPictureUrlAsync(params KeyValuePair<string, string>[] parameters)
         {
-            return JsonConvert.DeserializeObject<Respond>(await GetJsonAsync(patameters)).Pic[0];
+            return (await GetPictureUrlsAsync(parameters))[0];
         }
         public override async Task<string> GetPictureUrlAsync()
         {
-            return JsonConvert.DeserializeObject<Respond>(await GetJsonAsync()).Pic[0];
+            return (await GetPictureUrlsAsync())[0];
         }
         public override Task<string> GetPictureUrlAsync(R18Type r18)
         {
@@ -107,32 +123,32 @@ namespace SetuAPITool.MirlKoi
         }
         public async Task<string> GetPictureUrlAsync(Sort sort)
         {
-            return JsonConvert.DeserializeObject<Respond>(await GetJsonAsync(sort)).Pic[0];
+            return (await GetPictureUrlsAsync(1, sort))[0];
         }
         public async Task<string> GetPictureUrlAsync(Request request)
         {
-            return JsonConvert.DeserializeObject<Respond>(await GetJsonAsync(request)).Pic[0];
+            return (await GetPictureUrlsAsync(request))[0];
         }
 
-        public override async Task<List<string>> GetPictureUrlsAsync(params KeyValuePair<string, string>[] patameters)
+        public override async Task<List<string>> GetPictureUrlsAsync(params KeyValuePair<string, string>[] parameters)
         {
-            return JsonConvert.DeserializeObject<Respond>(await GetJsonAsync(patameters)).Pic.ToList();
+            return (await GetResponseAsync(parameters)).Pic;
         }
         public override async Task<List<string>> GetPictureUrlsAsync(int num = 1)
         {
-            return JsonConvert.DeserializeObject<Respond>(await GetJsonAsync()).Pic.ToList();
+            return (await GetResponseAsync(num)).Pic;
         }
         public override Task<List<string>> GetPictureUrlsAsync(int num, R18Type r18)
         {
             throw new NotSupportedException();
         }
-        public async Task<List<string>> GetPictureUrlsAsync(Sort sort)
+        public async Task<List<string>> GetPictureUrlsAsync(int num, Sort sort)
         {
-            return JsonConvert.DeserializeObject<Respond>(await GetJsonAsync(sort)).Pic.ToList();
+            return (await GetResponseAsync(num, sort)).Pic;
         }
         public async Task<List<string>> GetPictureUrlsAsync(Request request)
         {
-            return JsonConvert.DeserializeObject<Respond>(await GetJsonAsync(request)).Pic.ToList();
+            return (await GetResponseAsync(request)).Pic;
         }
     }
 }

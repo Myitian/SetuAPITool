@@ -23,7 +23,7 @@ namespace SetuAPITool.LoliconAPI.V1
         public bool Size1200 { get; set; }
 
         public Request() { }
-        public Request(params KeyValuePair<string, string>[] patameters)
+        public Request(params KeyValuePair<string, string>[] parameters)
         {
             bool r18 = true;
             bool num = true;
@@ -32,7 +32,7 @@ namespace SetuAPITool.LoliconAPI.V1
             bool proxy = true;
 
             int iResult;
-            foreach (KeyValuePair<string, string> patameter in patameters)
+            foreach (KeyValuePair<string, string> patameter in parameters)
             {
                 switch (patameter.Key)
                 {

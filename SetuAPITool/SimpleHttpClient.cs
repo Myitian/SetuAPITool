@@ -62,5 +62,12 @@ namespace SetuAPITool
                 return await _httpClient.PostAsync(url, content);
             }
         }
+        public async Task<HttpResponseMessage> PostAsync(string url, string args)
+        {
+            using (StringContent content = new StringContent(""))
+            {
+                return await _httpClient.PostAsync(url + "?" + args, content);
+            }
+        }
     }
 }

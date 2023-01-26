@@ -14,7 +14,7 @@ namespace SetuAPITool.Anosu
         public const string JsonAPI = "https://image.anosu.top/pixiv/json";
         public const string UniversalAPI = "https://image.anosu.top/pixiv";
 
-        public override Task<string> GetJsonAsync(params KeyValuePair<string, string>[] patameters)
+        public override Task<string> GetJsonAsync(params KeyValuePair<string, string>[] parameters)
         {
             throw new NotImplementedException();
         }
@@ -29,22 +29,22 @@ namespace SetuAPITool.Anosu
             throw new NotImplementedException();
         }
 
-        public override Task<HttpContent> GetPictureAsync(params KeyValuePair<string, string>[] patameters)
+        public override Task<HttpResponseMessage> GetPictureAsync(params KeyValuePair<string, string>[] parameters)
         {
             throw new NotImplementedException();
         }
 
-        public override Task<HttpContent> GetPictureAsync()
+        public override Task<HttpResponseMessage> GetPictureAsync()
         {
             throw new NotImplementedException();
         }
 
-        public override Task<HttpContent> GetPictureAsync(R18Type r18)
+        public override Task<HttpResponseMessage> GetPictureAsync(R18Type r18)
         {
             throw new NotImplementedException();
         }
 
-        public override Task<string> GetPictureUrlAsync(params KeyValuePair<string, string>[] patameters)
+        public override Task<string> GetPictureUrlAsync(params KeyValuePair<string, string>[] parameters)
         {
             throw new NotImplementedException();
         }
@@ -59,7 +59,7 @@ namespace SetuAPITool.Anosu
             throw new NotImplementedException();
         }
 
-        public override Task<List<string>> GetPictureUrlsAsync(params KeyValuePair<string, string>[] patameters)
+        public override Task<List<string>> GetPictureUrlsAsync(params KeyValuePair<string, string>[] parameters)
         {
             throw new NotImplementedException();
         }
@@ -74,7 +74,7 @@ namespace SetuAPITool.Anosu
             throw new NotImplementedException();
         }
 
-        public Task<PixivInfo> GetPixivInfoAsync(params KeyValuePair<string, string>[] patameters)
+        public Task<PixivInfo> GetPixivInfoAsync(params KeyValuePair<string, string>[] parameters)
         {
             throw new NotImplementedException();
         }
@@ -89,7 +89,7 @@ namespace SetuAPITool.Anosu
             throw new NotImplementedException();
         }
 
-        public Task<List<PixivInfo>> GetMultiplePixivInfoAsync(params KeyValuePair<string, string>[] patameters)
+        public Task<List<PixivInfo>> GetMultiplePixivInfoAsync(params KeyValuePair<string, string>[] parameters)
         {
             throw new NotImplementedException();
         }

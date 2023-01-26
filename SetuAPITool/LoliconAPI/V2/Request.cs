@@ -44,7 +44,7 @@ namespace SetuAPITool.LoliconAPI.V2
         public bool ExcludeAI { get; set; }
 
         public Request() { }
-        public Request(params KeyValuePair<string, string>[] patameters)
+        public Request(params KeyValuePair<string, string>[] parameters)
         {
             bool r18 = true;
             bool num = true;
@@ -59,7 +59,7 @@ namespace SetuAPITool.LoliconAPI.V2
 
             int iResult;
             long lResult;
-            foreach (KeyValuePair<string, string> patameter in patameters)
+            foreach (KeyValuePair<string, string> patameter in parameters)
             {
                 switch (patameter.Key)
                 {

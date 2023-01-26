@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace SetuAPITool.Jitsu
 {
-    internal class Respond
+    public class Response
     {
         [JsonProperty("code")]
         public int Code { get; set; }

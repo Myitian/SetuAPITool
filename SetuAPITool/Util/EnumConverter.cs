@@ -6,11 +6,19 @@ namespace SetuAPITool.Util
     {
         public static string ToString<T>(T value) where T : Enum
         {
-            return value.ToString().ToLower();
+            string s = value.ToString().ToLower();
+            return s[0] == '_' ? s.Substring(1) : s;
         }
         public static T ToEnum<T>(string value) where T : Enum
         {
-            return (T)Enum.Parse(typeof(T), value, true);
+            try
+            {
+                return (T)Enum.Parse(typeof(T), value, true);
+            }
+            catch
+            {
+                return (T)Enum.Parse(typeof(T), "_" + value, true);
+            }
         }
     }
 }

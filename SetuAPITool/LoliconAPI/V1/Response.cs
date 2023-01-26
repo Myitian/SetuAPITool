@@ -1,8 +1,9 @@
 ﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace SetuAPITool.LoliconAPI.V1
 {
-    public class Respond
+    public class Response
     {
         [JsonProperty("code")]
         public Code Code { get; set; }
@@ -14,6 +15,6 @@ namespace SetuAPITool.LoliconAPI.V1
         public int Count { get; set; }
 
         [JsonProperty("data")]
-        public PixivInfo[] Data { get; set; }
+        public List<PixivInfo> Data { get; set; }
     }
 }

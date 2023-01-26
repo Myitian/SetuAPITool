@@ -2,6 +2,7 @@
 {
     public enum Source
     {
+        Default,
         Anosu,
         Jitsu,
         All

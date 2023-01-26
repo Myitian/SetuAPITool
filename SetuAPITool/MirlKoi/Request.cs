@@ -1,5 +1,6 @@
 ﻿using SetuAPITool.Util;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SetuAPITool.MirlKoi
 {
@@ -8,10 +9,14 @@ namespace SetuAPITool.MirlKoi
         public Sort Sort { get; set; }
         public int Num { get; set; }
 
-        public Request() { }
-        public Request(params KeyValuePair<string, string>[] patameters)
+        public Request(int num = 1, Sort sort = Sort.Random)
         {
-            foreach (KeyValuePair<string, string> patameter in patameters)
+            Num = num;
+            Sort = sort;
+        }
+        public Request(params KeyValuePair<string, string>[] parameters)
+        {
+            foreach (KeyValuePair<string, string> patameter in parameters)
             {
                 switch (patameter.Key)
                 {
@@ -30,15 +35,20 @@ namespace SetuAPITool.MirlKoi
 
         public KeyValuePair<string, string>[] ToKeyValuePairs()
         {
-            List<KeyValuePair<string, string>> result = new List<KeyValuePair<string, string>>(3)
+            return ToDictionary().ToArray();
+        }
+
+        public Dictionary<string, string> ToDictionary()
+        {
+            Dictionary<string, string> result = new Dictionary<string, string>
             {
-                new KeyValuePair<string, string>("sort", EnumConverter.ToString(Sort))
+                { "sort", EnumConverter.ToString(Sort) }
             };
             if (Num > 1)
             {
-                result.Add(new KeyValuePair<string, string>("num", Num.ToString()));
+                result["num"] = Num.ToString();
             }
-            return result.ToArray();
+            return result;
         }
     }
 }
