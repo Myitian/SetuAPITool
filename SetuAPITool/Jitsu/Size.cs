@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
 
 namespace SetuAPITool.Jitsu
 {
@@ -33,7 +31,7 @@ namespace SetuAPITool.Jitsu
             "mw240",
             "mw128",
             "mw120",
-            
+
             "2160p",
             "1440p",
             "1080p",

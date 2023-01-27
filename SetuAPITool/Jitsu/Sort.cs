@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SetuAPITool.Jitsu
+﻿namespace SetuAPITool.Jitsu
 {
     public enum Sort
     {

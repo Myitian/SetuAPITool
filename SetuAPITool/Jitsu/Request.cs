@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-using System;
+﻿using SetuAPITool.Util;
+using System.Collections.Generic;
 using System.Linq;
-using SetuAPITool.Util;
 
 namespace SetuAPITool.Jitsu
 {

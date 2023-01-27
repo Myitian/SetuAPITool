@@ -1,11 +1,6 @@
-﻿using Newtonsoft.Json;
-using SetuAPITool.Jitsu;
-using SetuAPITool.Util;
-using SetuAPITool.Util.LoliconAPI;
-using System;
+﻿using SetuAPITool.Util;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace SetuAPITool.Anosu
 {

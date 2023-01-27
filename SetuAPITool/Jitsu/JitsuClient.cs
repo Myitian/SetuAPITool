@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using SetuAPITool.MirlKoi;
 using SetuAPITool.Util;
 using System;
 using System.Collections.Generic;
@@ -92,7 +91,7 @@ namespace SetuAPITool.Jitsu
         }
         public override async Task<string> GetJsonAsync(int num, R18Type r18)
         {
-            switch(r18)
+            switch (r18)
             {
                 case R18Type.NonR18:
                     double p = _randomUtil.RNG.NextDouble();
@@ -146,7 +145,7 @@ namespace SetuAPITool.Jitsu
             {
                 _urls = _r18[src];
             }
-            else if(request.Size.SizeType == SizeType.Original)
+            else if (request.Size.SizeType == SizeType.Original)
             {
                 _urls = _api[src];
             }
@@ -252,7 +251,7 @@ namespace SetuAPITool.Jitsu
 
             if (src == Source.Default)
             {
-                if(request.Sort == Sort.R18)
+                if (request.Sort == Sort.R18)
                 {
                     src = Source.Jitsu;
                 }
