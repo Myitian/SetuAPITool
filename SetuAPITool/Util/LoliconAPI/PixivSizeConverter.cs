@@ -4,7 +4,7 @@ using System;
 namespace SetuAPITool.Util.LoliconAPI
 {
 
-    public class SizeConverter : JsonConverter<PixivSize>
+    public class PixivSizeConverter : JsonConverter<PixivSize>
     {
         private readonly static string[] _sizeStr = { "original", "regular", "small", "thumb", "mini" };
 

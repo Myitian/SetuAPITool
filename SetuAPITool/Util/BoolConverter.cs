@@ -1,4 +1,4 @@
-﻿namespace SetuAPITool.Util.LoliconAPI
+﻿namespace SetuAPITool.Util
 {
     public static class BoolConverter
     {

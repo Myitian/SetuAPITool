@@ -1,47 +1,54 @@
-﻿using System.Collections.Generic;
-using System;
-using System.Linq;
+﻿using Newtonsoft.Json;
+using SetuAPITool.Jitsu;
 using SetuAPITool.Util;
+using SetuAPITool.Util.LoliconAPI;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
-namespace SetuAPITool.Jitsu
+namespace SetuAPITool.Anosu
 {
     public class Request
     {
-        public Sort Sort { get; set; }
-        public Size Size { get; set; }
         public int Num { get; set; }
+        public R18Type R18 { get; set; }
+        public PixivSize Size { get; set; }
+        public string Keyword { get; set; }
         public string Proxy { get; set; }
-        public Source Source { get; set; }
+        public int Db { get; set; }
         public bool PostRequest { get; set; }
 
-        public Request(int num = 1, Sort sort = Sort.Default)
+        public Request(int num = 1, R18Type r18 = R18Type.NonR18, string keyword = null)
         {
             Num = num;
-            Sort = sort;
+            R18 = r18;
+            Keyword = keyword;
         }
         public Request(Request request)
         {
-            Sort = request.Sort;
-            Size = new Size(request.Size);
             Num = request.Num;
+            R18 = request.R18;
+            Size = request.Size;
             Proxy = request.Proxy;
-            Source = request.Source;
-            PostRequest = request.PostRequest;
+            Keyword = request.Keyword;
+            Db = request.Db;
         }
         public Request(params KeyValuePair<string, string>[] parameters)
         {
+            int iResult;
             foreach (KeyValuePair<string, string> patameter in parameters)
             {
                 switch (patameter.Key)
                 {
-                    case "sort":
-                        Sort = EnumConverter.ToEnum<Sort>(patameter.Value);
+                    case "r18":
+                        R18 = EnumConverter.ToEnum<R18Type>(patameter.Value);
                         break;
                     case "size":
-                        Size = new Size(patameter.Value);
+                        Size = EnumConverter.ToEnum<PixivSize>(patameter.Value);
                         break;
                     case "num":
-                        if (int.TryParse(patameter.Value, out int iResult))
+                        if (int.TryParse(patameter.Value, out iResult))
                         {
                             Num = iResult;
                         }
@@ -49,8 +56,14 @@ namespace SetuAPITool.Jitsu
                     case "proxy":
                         Proxy = patameter.Value;
                         break;
-                    case "source":
-                        Source = EnumConverter.ToEnum<Source>(patameter.Value);
+                    case "keyword":
+                        Keyword = patameter.Value;
+                        break;
+                    case "db":
+                        if (int.TryParse(patameter.Value, out iResult))
+                        {
+                            Db = iResult;
+                        }
                         break;
                     case "postrequest":
                         PostRequest = BoolConverter.ToBool(patameter.Value);
@@ -58,7 +71,6 @@ namespace SetuAPITool.Jitsu
                 }
             }
         }
-
         public KeyValuePair<string, string>[] ToKeyValuePairs()
         {
             return ToRequestDictionary().ToArray();
@@ -66,25 +78,25 @@ namespace SetuAPITool.Jitsu
         public Dictionary<string, string> ToRequestDictionary()
         {
             Dictionary<string, string> result = new Dictionary<string, string>();
-            if (Sort.Default < Sort && Sort < Sort.SpR18)
-            {
-                result["sort"] = EnumConverter.ToString(Sort);
-            }
-            if (Size.SizeType != SizeType.Original)
-            {
-                result["size"] = Size.SizeString;
-            }
-            if (!string.IsNullOrWhiteSpace(Proxy) && (Size.SizeType == SizeType.Original || Size.SizeType == SizeType.TypeB))
-            {
-                result["proxy"] = Proxy;
-            }
             if (Num > 1)
             {
                 result["num"] = Num.ToString();
             }
+            if (R18 != R18Type.NonR18)
+            {
+                result["r18"] = ((int)R18).ToString();
+            }
+            if (Size != PixivSize.Default)
+            {
+                result["size"] = EnumConverter.ToString(Size);
+            }
             if (!string.IsNullOrWhiteSpace(Proxy))
             {
                 result["proxy"] = Proxy;
+            }
+            if (Db > 0)
+            {
+                result["db"] = Db.ToString();
             }
             return result;
         }

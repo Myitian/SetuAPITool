@@ -24,6 +24,7 @@ namespace SetuAPITool.LoliconAPI.V2
         public string[][] Tag { get; set; }
 
         [JsonProperty("size", DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonConverter(typeof(PixivSizeConverter))]
         public PixivSize Size { get; set; }
 
         [JsonProperty("proxy", DefaultValueHandling = DefaultValueHandling.Ignore)]

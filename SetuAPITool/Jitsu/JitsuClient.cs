@@ -156,9 +156,19 @@ namespace SetuAPITool.Jitsu
             }
             Dictionary<string, string> paramDic = request.ToRequestDictionary();
             paramDic["type"] = "json";
-            using (HttpResponseMessage resp = await GetAsync(_randomUtil.GetRandom(_urls), ParametersConverter.UrlEncode(paramDic.ToArray())))
+            if (request.PostRequest)
             {
-                return await resp.Content.ReadAsStringAsync();
+                using (HttpResponseMessage resp = await PostAsync(_randomUtil.GetRandom(_urls), ParametersConverter.UrlEncode(paramDic.ToArray())))
+                {
+                    return await resp.Content.ReadAsStringAsync();
+                }
+            }
+            else
+            {
+                using (HttpResponseMessage resp = await GetAsync(_randomUtil.GetRandom(_urls), ParametersConverter.UrlEncode(paramDic.ToArray())))
+                {
+                    return await resp.Content.ReadAsStringAsync();
+                }
             }
         }
 
@@ -275,7 +285,14 @@ namespace SetuAPITool.Jitsu
             {
                 Dictionary<string, string> paramDic = request.ToRequestDictionary();
                 paramDic["type"] = "json";
-                return await GetAsync(_randomUtil.GetRandom(_urls), ParametersConverter.UrlEncode(paramDic.ToArray()));
+                if (request.PostRequest)
+                {
+                    return await GetAsync(_randomUtil.GetRandom(_urls), ParametersConverter.UrlEncode(paramDic.ToArray()));
+                }
+                else
+                {
+                    return await PostAsync(_randomUtil.GetRandom(_urls), ParametersConverter.UrlEncode(paramDic.ToArray()));
+                }
             }
         }
 
