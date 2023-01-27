@@ -14,5 +14,5 @@ WIP
   - [x] [V1](https://api.lolicon.app/#/setu-v1)
   - [x] [V2](https://api.lolicon.app/#/setu)
 - [x] [Jitsu](https://img.jitsu.top)
-- [ ] [Anosu](https://docs.anosu.top)
+- [x] [Anosu](https://docs.anosu.top)
 - [x] [MirlKoi](https://iw233.cn/main.html)
