@@ -1,28 +1,17 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 
-namespace SetuAPITool.Util
+namespace Myitian.SetuAPITool.Util
 {
-    public class EnumConverter<T> : JsonConverter<T> where T : Enum
-    {
-        public override void WriteJson(JsonWriter writer, T value, JsonSerializer serializer)
-        {
-            writer.WriteValue(EnumConverter.ToString(value));
-        }
-
-        public override T ReadJson(JsonReader reader, Type objectType, T existingValue, bool hasExistingValue, JsonSerializer serializer)
-        {
-            return EnumConverter.ToEnum<T>(reader.Value.ToString());
-        }
-    }
-
+    /// <summary>枚举转换器</summary>
     public static class EnumConverter
     {
+        /// <summary>转换为字符串</summary>
         public static string ToString<T>(T value) where T : Enum
         {
             string s = value.ToString().ToLower();
             return s[0] == '_' ? s.Substring(1) : s;
         }
+        /// <summary>转换为枚举</summary>
         public static T ToEnum<T>(string value) where T : Enum
         {
             try

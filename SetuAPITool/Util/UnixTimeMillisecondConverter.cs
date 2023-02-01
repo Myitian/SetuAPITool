@@ -2,21 +2,20 @@
 using Newtonsoft.Json.Converters;
 using System;
 
-namespace SetuAPITool.Util
+namespace Myitian.SetuAPITool.Util
 {
+    /// <summary>Unix时间戳（毫秒）转换器</summary>
     public class UnixTimeMillisecondConverter : DateTimeConverterBase
     {
-        /// <summary>
-        /// Writes the JSON representation of the object.
-        /// </summary>
-        /// <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter"/> to write to.</param>
-        /// <param name="value">The value.</param>
-        /// <param name="serializer">The calling serializer.</param>
+        /// <summary>写入对象的JSON形式</summary>
+        /// <param name="writer">要写入的 <see cref="JsonWriter"/></param>
+        /// <param name="value">值</param>
+        /// <param name="serializer">调用的序列化器</param>
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             if (value is DateTime time)
             {
-                writer.WriteValue(TimeConvert.ToUnixTimeMillisecond(time));
+                writer.WriteValue(Time.ToUnixTimeMillisecond(time));
             }
             else
             {
@@ -24,19 +23,17 @@ namespace SetuAPITool.Util
             }
         }
 
-        /// <summary>
-        ///   Reads the JSON representation of the object.
-        /// </summary>
-        /// <param name = "reader">The <see cref = "JsonReader" /> to read from.</param>
-        /// <param name = "objectType">Type of the object.</param>
-        /// <param name = "existingValue">The existing value of object being read.</param>
-        /// <param name = "serializer">The calling serializer.</param>
-        /// <returns>The object value.</returns>
+        /// <summary> 读取对象的JSON形式</summary>
+        /// <param name="reader">要读取的 <see cref="JsonReader"/></param>
+        /// <param name="objectType">对象的类型</param>
+        /// <param name="existingValue">被读取对象的现有值</param>
+        /// <param name="serializer">调用的序列化器</param>
+        /// <returns>对象的值</returns>
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             if (reader.TokenType == JsonToken.Integer)
             {
-                return TimeConvert.FromUnixTimeMillisecond((long)reader.Value);
+                return Time.FromUnixTimeMillisecond((long)reader.Value);
             }
             throw new Exception("Wrong Token Type");
         }

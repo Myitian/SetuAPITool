@@ -1,5 +1,6 @@
-﻿namespace SetuAPITool.MirlKoi
+﻿namespace Myitian.SetuAPITool.MirlKoi
 {
+    /// <summary>分类</summary>
     public enum Sort
     {
         /// <summary>随机壁纸（全部图）</summary>

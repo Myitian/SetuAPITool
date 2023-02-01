@@ -1,11 +1,26 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard1.1</TargetFramework>
     <Title>Setu API Tool</Title>
     <Company>Myitian</Company>
     <Authors>Myitian</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RootNamespace>Myitian.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
+    <RepositoryUrl>https://github.com/Myitian/SetuAPITool</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/Myitian/SetuAPITool</PackageProjectUrl>
+    <PackageTags>Setu;API;Lolicon;Jitsu;Anosu;Mirlkoi</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>none</DebugType>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
   </ItemGroup>

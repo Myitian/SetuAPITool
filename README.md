@@ -6,7 +6,7 @@
 
 需要 [Json.NET](https://www.newtonsoft.com/json) (Newtonsoft.Json)
 
-WIP
+WIP （基本完工，待测试）
 
 # API支持情况
 

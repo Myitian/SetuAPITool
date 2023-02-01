@@ -1,7 +1,9 @@
-﻿namespace SetuAPITool.Jitsu
+﻿namespace Myitian.SetuAPITool.Jitsu
 {
+    /// <summary>图片的分类</summary>
     public enum Sort
     {
+        /// <summary>默认</summary>
         Default,
 
         /// <summary>全部图片</summary>

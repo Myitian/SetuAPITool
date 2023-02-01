@@ -1,23 +1,34 @@
-﻿using SetuAPITool.Util;
+﻿using Myitian.SetuAPITool.Util;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SetuAPITool.Jitsu
+namespace Myitian.SetuAPITool.Jitsu
 {
+    /// <summary>Jitsu 请求</summary>
     public class Request
     {
+        /// <summary>图片的分类</summary>
         public Sort Sort { get; set; }
+        /// <summary>图片的规格</summary>
         public Size Size { get; set; }
+        /// <summary>返回的数量</summary>
         public int Num { get; set; }
+        /// <summary>图片链接所使用的反代地址（仅 <c><see cref="Sort"/> &gt;= <see cref="Sort.Pixiv"/> &amp;&amp; <see cref="Sort"/> &lt; <see cref="Sort.SpR18"/></c> 时有效）</summary>
         public string Proxy { get; set; }
+        /// <summary>请求的服务器</summary>
         public Source Source { get; set; }
+        /// <summary>是否使用POST请求</summary>
         public bool PostRequest { get; set; }
 
+        /// <param name="num">图片的数量</param>
+        /// <param name="sort">图片的分类</param>
         public Request(int num = 1, Sort sort = Sort.Default)
         {
             Num = num;
             Sort = sort;
         }
+        /// <summary>深拷贝已有 <see cref="Request"/></summary>
+        /// <param name="request">已有的 <see cref="Request"/></param>
         public Request(Request request)
         {
             Sort = request.Sort;
@@ -27,6 +38,8 @@ namespace SetuAPITool.Jitsu
             Source = request.Source;
             PostRequest = request.PostRequest;
         }
+        /// <summary>从键值对参数创建 <see cref="Request"/></summary>
+        /// <param name="parameters">键值对参数</param>
         public Request(params KeyValuePair<string, string>[] parameters)
         {
             foreach (KeyValuePair<string, string> patameter in parameters)
@@ -58,10 +71,14 @@ namespace SetuAPITool.Jitsu
             }
         }
 
+        /// <summary>转换为键值对参数</summary>
+        /// <returns>一个键值对数组，包含请求所需属性的键值对形式</returns>
         public KeyValuePair<string, string>[] ToKeyValuePairs()
         {
             return ToRequestDictionary().ToArray();
         }
+        /// <summary>转换为字典</summary>
+        /// <returns>一个字典，包含请求所需属性的键值对形式</returns>
         public Dictionary<string, string> ToRequestDictionary()
         {
             Dictionary<string, string> result = new Dictionary<string, string>();

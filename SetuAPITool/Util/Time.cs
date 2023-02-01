@@ -1,8 +1,9 @@
 ﻿using System;
 
-namespace SetuAPITool.Util
+namespace Myitian.SetuAPITool.Util
 {
-    public static class TimeConvert
+    /// <summary>时间工具</summary>
+    public static class Time
     {
         /// <summary>Unix时间戳起始秒</summary>
         public const long UnixTimeStartSecond = 62135596800;
